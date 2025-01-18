@@ -20,6 +20,7 @@ function parseDocument(text: string): SnippetDocument | undefined {
             document.body = body;
         }
     }
+
     return document;
 }
 
