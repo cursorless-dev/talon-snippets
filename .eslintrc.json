@@ -7,7 +7,7 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
-    "ignorePatterns": ["/*", "!src"],
+    "ignorePatterns": ["/*", "!src", "src/test"],
     "parserOptions": {
         "project": "./tsconfig.json",
         "sourceType": "module",
