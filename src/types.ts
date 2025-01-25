@@ -1,5 +1,6 @@
 export interface SnippetDocument {
     name?: string;
+    description?: string;
     phrases?: string[];
     insertionScopes?: string[];
     languages?: string[];

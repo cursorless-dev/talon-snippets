@@ -13,6 +13,7 @@ export function serializeSnippetFile(snippetDocuments: SnippetDocument[]): strin
 function getDocumentText(document: SnippetDocument): string {
     const parts: string[] = [
         getOptionalPairString("name", document.name),
+        getOptionalPairString("description", document.description),
         getOptionalPairString("language", document.languages),
         getOptionalPairString("phrase", document.phrases),
         getOptionalPairString("insertionScope", document.insertionScopes),

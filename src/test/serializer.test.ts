@@ -73,6 +73,7 @@ function testMultipleValues() {
     const fixture: SnippetDocument[] = [
         {
             name: "mySnippet",
+            description: "My snippet",
             phrases: ["first", "second"],
             languages: ["javascript", "java"],
             insertionScopes: ["function", "statement"],
@@ -83,6 +84,7 @@ function testMultipleValues() {
 
     const expected = `\
 name: mySnippet
+description: My snippet
 language: javascript | java
 phrase: first | second
 insertionScope: function | statement
