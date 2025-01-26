@@ -1,16 +1,21 @@
-import type { SnippetDocument, SnippetVariable } from "./types";
+import type { Snippet, SnippetFile, SnippetHeader, SnippetVariable } from "./types";
 
-export function serializeSnippetFile(snippetDocuments: SnippetDocument[]): string {
-    const result = snippetDocuments
-        .map((s) => getDocumentText(s))
-        // Remove empty documents
-        .filter(Boolean)
-        .join("\n---\n\n");
+export function serializeSnippetFile(snippetFile: SnippetFile): string {
+    const documents: string[] = [];
+
+    if (snippetFile.header != null) {
+        documents.push(getDocumentText(snippetFile.header));
+    }
+
+    documents.push(...snippetFile.snippets.map(getDocumentText));
+
+    // Remove empty documents
+    const result = documents.filter(Boolean).join("\n---\n\n");
 
     return result ? result + "\n---\n" : "";
 }
 
-function getDocumentText(document: SnippetDocument): string {
+function getDocumentText(document: SnippetHeader | Snippet): string {
     const parts: string[] = [
         getOptionalPairString("name", document.name),
         getOptionalPairString("description", document.description),
@@ -26,7 +31,7 @@ function getDocumentText(document: SnippetDocument): string {
         parts.push(...getSortedVariables(document.variables));
     }
 
-    if (document.body != null) {
+    if ("body" in document) {
         parts.push("-", ...document.body);
     }
 

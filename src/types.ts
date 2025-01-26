@@ -1,11 +1,19 @@
-export interface SnippetDocument {
+export interface SnippetFile {
+    header?: SnippetHeader;
+    snippets: Snippet[];
+}
+
+export interface SnippetHeader {
     name?: string;
     description?: string;
     phrases?: string[];
     insertionScopes?: string[];
     languages?: string[];
-    body?: string[];
     variables: SnippetVariable[];
+}
+
+export interface Snippet extends SnippetHeader {
+    body: string[];
 }
 
 export interface SnippetVariable {
