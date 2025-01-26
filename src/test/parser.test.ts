@@ -13,29 +13,9 @@ suite("parser", () => {
 });
 
 function testFull() {
-    const fixture = `
-name: foo
--
-  
-  foo  
-  
- bar 
-baz `;
-
-    const expected: SnippetDocument = {
-        name: "foo",
-        body: ["  foo", "", " bar", "baz"],
-        variables: [],
-    };
-
-    const actual = parseSnippetFile(fixture);
-
-    assert.deepEqual(actual, [expected]);
-}
-
-function testWhitespace() {
     const fixture = `\
 name: mySnippet
+description: My snippet
 phrase: try catch
 language: javascript
 insertionScope: statement
@@ -54,6 +34,7 @@ try {
 
     const expected: SnippetDocument = {
         name: "mySnippet",
+        description: "My snippet",
         phrases: ["try catch"],
         languages: ["javascript"],
         insertionScopes: ["statement"],
@@ -71,6 +52,27 @@ try {
                 wrapperScope: "statement",
             },
         ],
+    };
+
+    const actual = parseSnippetFile(fixture);
+
+    assert.deepEqual(actual, [expected]);
+}
+
+function testWhitespace() {
+    const fixture = `
+name: foo
+-
+  
+  foo  
+  
+ bar 
+baz `;
+
+    const expected: SnippetDocument = {
+        name: "foo",
+        body: ["  foo", "", " bar", "baz"],
+        variables: [],
     };
 
     const actual = parseSnippetFile(fixture);

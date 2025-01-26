@@ -39,6 +39,9 @@ function parseContext(text: string): SnippetDocument | undefined {
             case "name":
                 document.name = value;
                 break;
+            case "description":
+                document.description = value;
+                break;
             case "phrase":
                 document.phrases = parseVectorValue(value);
                 break;
