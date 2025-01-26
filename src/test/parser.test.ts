@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { parseSnippetFile } from "../parser";
-import type { SnippetDocument } from "../types";
+import type { SnippetFile } from "../types";
 
 suite("parser", () => {
     test("Full", testFull);
@@ -32,31 +32,35 @@ try {
 }
 `;
 
-    const expected: SnippetDocument = {
-        name: "mySnippet",
-        description: "My snippet",
-        phrases: ["try catch"],
-        languages: ["javascript"],
-        insertionScopes: ["statement"],
-        body: ["try {", "    $1", "} catch (ex) {", "    $0", "}"],
-        variables: [
+    const expected: SnippetFile = {
+        snippets: [
             {
-                name: "0",
-                wrapperPhrases: ["try"],
-                wrapperScope: "statement",
-                insertionFormatters: ["PASCAL_CASE"],
-            },
-            {
-                name: "1",
-                wrapperPhrases: ["catch"],
-                wrapperScope: "statement",
+                name: "mySnippet",
+                description: "My snippet",
+                phrases: ["try catch"],
+                languages: ["javascript"],
+                insertionScopes: ["statement"],
+                body: ["try {", "    $1", "} catch (ex) {", "    $0", "}"],
+                variables: [
+                    {
+                        name: "0",
+                        wrapperPhrases: ["try"],
+                        wrapperScope: "statement",
+                        insertionFormatters: ["PASCAL_CASE"],
+                    },
+                    {
+                        name: "1",
+                        wrapperPhrases: ["catch"],
+                        wrapperScope: "statement",
+                    },
+                ],
             },
         ],
     };
 
     const actual = parseSnippetFile(fixture);
 
-    assert.deepEqual(actual, [expected]);
+    assert.deepEqual(actual, expected);
 }
 
 function testWhitespace() {
@@ -69,32 +73,41 @@ name: foo
  bar 
 baz `;
 
-    const expected: SnippetDocument = {
-        name: "foo",
-        body: ["  foo", "", " bar", "baz"],
-        variables: [],
+    const expected: SnippetFile = {
+        snippets: [
+            {
+                name: "foo",
+                body: ["  foo", "", " bar", "baz"],
+                variables: [],
+            },
+        ],
     };
 
     const actual = parseSnippetFile(fixture);
 
-    assert.deepEqual(actual, [expected]);
+    assert.deepEqual(actual, expected);
 }
 
 function testNameOnly() {
     const fixture = "name: mySnippet";
-    const expected: SnippetDocument = {
-        name: "mySnippet",
-        variables: [],
+    const expected: SnippetFile = {
+        header: {
+            name: "mySnippet",
+            variables: [],
+        },
+        snippets: [],
     };
 
     const actual = parseSnippetFile(fixture);
 
-    assert.deepEqual(actual, [expected]);
+    assert.deepEqual(actual, expected);
 }
 
 function testEmpty() {
     const fixture = "";
-    const expected: SnippetDocument[] = [];
+    const expected: SnippetFile = {
+        snippets: [],
+    };
     const actual = parseSnippetFile(fixture);
 
     assert.deepEqual(actual, expected);
@@ -115,20 +128,22 @@ phrase: second
 -
 bar`;
 
-    const expected: SnippetDocument[] = [
-        {
-            name: "mySnippet",
-            phrases: ["first"],
-            body: ["foo"],
-            variables: [],
-        },
-        {
-            name: "mySnippet2",
-            phrases: ["second"],
-            body: ["bar"],
-            variables: [],
-        },
-    ];
+    const expected: SnippetFile = {
+        snippets: [
+            {
+                name: "mySnippet",
+                phrases: ["first"],
+                body: ["foo"],
+                variables: [],
+            },
+            {
+                name: "mySnippet2",
+                phrases: ["second"],
+                body: ["bar"],
+                variables: [],
+            },
+        ],
+    };
 
     const actual = parseSnippetFile(fixture);
 
@@ -145,16 +160,18 @@ insertionScope: function | statement
 foo
 `;
 
-    const expected: SnippetDocument[] = [
-        {
-            name: "mySnippet",
-            phrases: ["first", "second"],
-            languages: ["javascript", "java"],
-            insertionScopes: ["function", "statement"],
-            body: ["foo"],
-            variables: [],
-        },
-    ];
+    const expected: SnippetFile = {
+        snippets: [
+            {
+                name: "mySnippet",
+                phrases: ["first", "second"],
+                languages: ["javascript", "java"],
+                insertionScopes: ["function", "statement"],
+                body: ["foo"],
+                variables: [],
+            },
+        ],
+    };
 
     const actual = parseSnippetFile(fixture);
 
@@ -170,13 +187,15 @@ a
 b
 `;
 
-    const expected: SnippetDocument[] = [
-        {
-            name: "test",
-            body: ["a", "-", "b"],
-            variables: [],
-        },
-    ];
+    const expected: SnippetFile = {
+        snippets: [
+            {
+                name: "test",
+                body: ["a", "-", "b"],
+                variables: [],
+            },
+        ],
+    };
 
     const actual = parseSnippetFile(fixture);
 

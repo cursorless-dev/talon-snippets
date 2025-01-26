@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { serializeSnippetFile } from "../serializer";
-import type { SnippetDocument } from "../types";
+import type { SnippetFile } from "../types";
 
 suite("serializer", () => {
     test("Key order", testKeyOrder);
@@ -9,28 +9,31 @@ suite("serializer", () => {
 });
 
 function testKeyOrder() {
-    const fixture: SnippetDocument = {
-        variables: [
-            {
-                wrapperScope: "statement",
-                wrapperPhrases: ["try"],
-                insertionFormatters: ["PASCAL_CASE"],
-                name: "0",
-            },
-            {
-                name: "foo",
-                wrapperPhrases: ["bar"],
-            },
-            {
-                wrapperScope: "statement",
-                wrapperPhrases: ["catch"],
-                name: "1",
-            },
-        ],
-        insertionScopes: ["statement"],
-        phrases: ["try catch"],
-        languages: ["javascript"],
-        name: "mySnippet",
+    const fixture: SnippetFile = {
+        header: {
+            variables: [
+                {
+                    wrapperScope: "statement",
+                    wrapperPhrases: ["try"],
+                    insertionFormatters: ["PASCAL_CASE"],
+                    name: "0",
+                },
+                {
+                    name: "foo",
+                    wrapperPhrases: ["bar"],
+                },
+                {
+                    wrapperScope: "statement",
+                    wrapperPhrases: ["catch"],
+                    name: "1",
+                },
+            ],
+            insertionScopes: ["statement"],
+            phrases: ["try catch"],
+            languages: ["javascript"],
+            name: "mySnippet",
+        },
+        snippets: [],
     };
 
     const expected = `\
@@ -48,15 +51,18 @@ $0.wrapperScope: statement
 ---
 `;
 
-    const actual = serializeSnippetFile([fixture]);
+    const actual = serializeSnippetFile(fixture);
 
     assert.equal(actual, expected);
 }
 
 function testNameOnly() {
-    const fixture: SnippetDocument = {
-        name: "mySnippet",
-        variables: [],
+    const fixture: SnippetFile = {
+        header: {
+            name: "mySnippet",
+            variables: [],
+        },
+        snippets: [],
     };
 
     const expected = `\
@@ -64,23 +70,25 @@ name: mySnippet
 ---
 `;
 
-    const actual = serializeSnippetFile([fixture]);
+    const actual = serializeSnippetFile(fixture);
 
     assert.equal(actual, expected);
 }
 
 function testMultipleValues() {
-    const fixture: SnippetDocument[] = [
-        {
-            name: "mySnippet",
-            description: "My snippet",
-            phrases: ["first", "second"],
-            languages: ["javascript", "java"],
-            insertionScopes: ["function", "statement"],
-            body: ["foo"],
-            variables: [],
-        },
-    ];
+    const fixture: SnippetFile = {
+        snippets: [
+            {
+                name: "mySnippet",
+                description: "My snippet",
+                phrases: ["first", "second"],
+                languages: ["javascript", "java"],
+                insertionScopes: ["function", "statement"],
+                body: ["foo"],
+                variables: [],
+            },
+        ],
+    };
 
     const expected = `\
 name: mySnippet

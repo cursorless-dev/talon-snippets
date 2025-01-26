@@ -1,31 +1,40 @@
-import type { SnippetDocument, SnippetVariable } from "./types";
+import type { Snippet, SnippetFile, SnippetVariable } from "./types";
 
-export function parseSnippetFile(content: string): SnippetDocument[] {
-    const documents = content.split(/^---$/m);
-    return documents.map(parseDocument).filter((d): d is SnippetDocument => d != null);
-}
+export function parseSnippetFile(content: string): SnippetFile {
+    const documentContents = content.split(/^---$/m);
+    const file: SnippetFile = { snippets: [] };
 
-function parseDocument(text: string): SnippetDocument | undefined {
-    const match = text.match(/^-$/m);
-    const contextText = match != null ? text.slice(0, match.index) : text;
-    const bodyText = match != null ? text.slice(match.index! + match[0].length) : null;
-    let document = parseContext(contextText);
+    for (const text of documentContents) {
+        const match = text.match(/^-$/m);
+        const contextText = match != null ? text.slice(0, match.index) : text;
+        const bodyText = match != null ? text.slice(match.index! + match[0].length) : null;
+        const body = bodyText ? parseBody(bodyText) : null;
+        let context = parseContext(contextText);
 
-    if (bodyText != null) {
-        const body = parseBody(bodyText);
+        // Snippet with body
         if (body != null) {
-            if (document == null) {
-                document = { variables: [] };
+            if (context == null) {
+                context = { variables: [] };
             }
-            document.body = body;
+            const { variables, ...rest } = context;
+            file.snippets.push({ ...rest, body, variables });
+        }
+        // Header without body
+        else if (context != null) {
+            if (file.header != null || file.snippets.length !== 0) {
+                throw Error("Header snippet must be first in file");
+            }
+            file.header = context;
         }
     }
 
-    return document;
+    return file;
 }
 
-function parseContext(text: string): SnippetDocument | undefined {
-    const document: SnippetDocument = { variables: [] };
+type Context = Omit<Snippet, "body">;
+
+function parseContext(text: string): Context | undefined {
+    const document: Context = { variables: [] };
     const pairs = parseContextPairs(text);
 
     if (Object.keys(pairs).length === 0) {
