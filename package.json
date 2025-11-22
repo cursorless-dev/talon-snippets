@@ -35,7 +35,7 @@
         "clean": "rm -rf lib",
         "fix:meta": "file-updater && prettier --write .",
         "test:meta": "eslint src && file-updater --test && prettier --check .",
-        "test": "jiti src/test/runTests.ts",
+        "test": "tsx src/test/runTests.ts",
         "file-updater": "file-updater"
     },
     "dependencies": {},
@@ -51,6 +51,7 @@
         "mocha": "^11.7.5",
         "prettier": "^3.6.2",
         "ts-archetype": "^0.5.0",
+        "tsx": "^4.20.6",
         "typescript-eslint": "^8.41.0",
         "typescript": "^5.9.3"
     }
