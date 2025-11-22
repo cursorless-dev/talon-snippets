@@ -1,11 +1,9 @@
 import { updater } from "file-updater";
 import {
-    updateEslintrc,
     updateGitignore,
-    updatePrettierignore,
-    updatePrettierrc,
-    updateVscodeSettings,
     updateLicense,
+    updatePrettierignore,
+    updateVscodeSettings,
 } from "ts-archetype";
 
 const config = {
@@ -19,10 +17,8 @@ const config = {
 
 export default async (workspaceDir) => {
     await updater({
-        ".eslintrc.json": updateEslintrc(config),
         ".gitignore": updateGitignore(config),
         ".prettierignore": updatePrettierignore(config),
-        ".prettierrc.json": updatePrettierrc(config),
         ".vscode/settings.json": updateVscodeSettings(config),
         LICENSE: updateLicense(config),
     });

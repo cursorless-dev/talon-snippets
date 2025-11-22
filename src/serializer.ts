@@ -1,4 +1,9 @@
-import type { Snippet, SnippetFile, SnippetHeader, SnippetVariable } from "./types";
+import type {
+    Snippet,
+    SnippetFile,
+    SnippetHeader,
+    SnippetVariable,
+} from "./types";
 
 export function serializeSnippetFile(snippetFile: SnippetFile): string {
     const documents: string[] = [];
@@ -47,13 +52,22 @@ function getSortedVariables(variables: SnippetVariable[]): string[] {
                 `$${variable.name}.insertionFormatter`,
                 variable.insertionFormatters,
             ),
-            getOptionalPairString(`$${variable.name}.wrapperPhrase`, variable.wrapperPhrases),
-            getOptionalPairString(`$${variable.name}.wrapperScope`, variable.wrapperScope),
+            getOptionalPairString(
+                `$${variable.name}.wrapperPhrase`,
+                variable.wrapperPhrases,
+            ),
+            getOptionalPairString(
+                `$${variable.name}.wrapperScope`,
+                variable.wrapperScope,
+            ),
         ])
         .filter(Boolean);
 }
 
-function getOptionalPairString(key: string, value: string | string[] | undefined): string {
+function getOptionalPairString(
+    key: string,
+    value: string | string[] | undefined,
+): string {
     if (value == null) {
         return "";
     }
