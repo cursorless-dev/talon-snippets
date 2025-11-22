@@ -1,7 +1,7 @@
 {
     "name": "talon-snippets",
     "displayName": "Talon snippets",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "description": "Snippets library for Talon",
     "author": "Andreas Arvidsson",
     "publisher": "AndreasArvidsson",
@@ -40,17 +40,19 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/mocha": "^10.0.1",
-        "@types/node": "22.10.2",
-        "@typescript-eslint/eslint-plugin": "7.13.1",
-        "@typescript-eslint/parser": "7.13.1",
-        "eslint": "8.57.0",
-        "file-updater": "0.5.0",
-        "glob": "11.0.1",
-        "mocha": "^10.2.0",
-        "prettier": "3.3.2",
-        "ts-archetype": "0.4.0",
-        "tsx": "4.19.4",
-        "typescript": "5.4.5"
+        "@eslint/js": "^9.31.0",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^24.10.1",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint": "^9.39.1",
+        "file-updater": "^0.5.0",
+        "glob": "^13.0.0",
+        "jiti": "^2.6.1",
+        "mocha": "^11.7.5",
+        "prettier": "^3.6.2",
+        "ts-archetype": "^0.5.0",
+        "tsx": "^4.20.6",
+        "typescript-eslint": "^8.41.0",
+        "typescript": "^5.9.3"
     }
 }

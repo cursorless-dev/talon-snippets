@@ -7,7 +7,8 @@ export function parseSnippetFile(content: string): SnippetFile {
     for (const text of documentContents) {
         const match = text.match(/^-$/m);
         const contextText = match != null ? text.slice(0, match.index) : text;
-        const bodyText = match != null ? text.slice(match.index! + match[0].length) : null;
+        const bodyText =
+            match != null ? text.slice(match.index! + match[0].length) : null;
         const body = bodyText ? parseBody(bodyText) : null;
         let context = parseContext(contextText);
 
