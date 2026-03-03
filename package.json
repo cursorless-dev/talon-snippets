@@ -1,7 +1,7 @@
 {
     "name": "talon-snippets",
     "displayName": "Talon snippets",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "description": "Snippets library for Talon",
     "author": "Andreas Arvidsson",
     "publisher": "AndreasArvidsson",
@@ -33,26 +33,24 @@
         "build:cjs": "tsc -p tsconfig.cjs.json",
         "build:esm": "tsc -p tsconfig.esm.json",
         "clean": "rm -rf lib",
-        "fix:meta": "file-updater && prettier --write .",
-        "test:meta": "eslint src && file-updater --test && prettier --check .",
-        "test": "tsx src/test/runTests.ts",
-        "file-updater": "file-updater"
+        "prettier": "prettier --write .",
+        "lint": "eslint src && prettier --check .",
+        "test": "tsx src/test/runTests.ts"
     },
     "dependencies": {},
     "devDependencies": {
-        "@eslint/js": "^9.31.0",
+        "@eslint/js": "^10.0.1",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^24.10.1",
+        "@types/node": "^25.3.3",
         "eslint-config-prettier": "^10.1.8",
-        "eslint": "^9.39.1",
-        "file-updater": "^0.5.0",
-        "glob": "^13.0.0",
+        "eslint": "^10.0.2",
+        "glob": "^13.0.6",
         "jiti": "^2.6.1",
         "mocha": "^11.7.5",
-        "prettier": "^3.6.2",
+        "prettier": "^3.8.1",
         "ts-archetype": "^0.5.0",
-        "tsx": "^4.20.6",
-        "typescript-eslint": "^8.41.0",
+        "tsx": "^4.21.0",
+        "typescript-eslint": "^8.56.1",
         "typescript": "^5.9.3"
     }
 }
